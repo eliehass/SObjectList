@@ -1,0 +1,15 @@
+<aura:component >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.sortState}" action="{!c.doInit}"/>
+
+    <aura:attribute name="sortState" type="Map" default="{}"/>
+    <aura:attribute name="fieldName" type="String" />
+    <aura:attribute name="fieldValue" type="String" />
+
+    <aura:if isTrue="{!v.fieldValue == 'asc'}" >
+        <lightning:icon iconName="utility:arrowdown" class="slds-icon slds-icon--x-small slds-icon-text-default" size="x-small"/>
+    </aura:if>
+    <aura:if isTrue="{!v.fieldValue == 'desc'}" >
+        <lightning:icon iconName="utility:arrowup" class="slds-icon slds-icon--x-small slds-icon-text-default" size="x-small"/>
+    </aura:if>
+</aura:component>

@@ -1,0 +1,81 @@
+<aura:component extends="c:helpers" access="global">
+
+    <aura:attribute name="theRecord" type="sObject"/>
+    <aura:attribute name="theSimpleRecord" type="sObject"/>
+    <aura:attribute name="parentId" type="String"/>
+    <aura:attribute name="isSelected" type="Boolean" default="false"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="editable" type="Boolean" default="true"/>
+    <aura:attribute name="editMobile" type="Boolean" default="false"/>
+    <aura:attribute name="showRemoveColumn" type="Boolean" default="false"/>
+    <aura:attribute name="showEditColumn" type="Boolean" default="false"/>
+    <aura:attribute name="showSelectColumn" type="Boolean" default="false"/>
+    <aura:attribute name="sObjectFieldAPINames" type="List" default="[]"/>
+    <aura:attribute name="sObjectFieldMap" type="Map" default="{}"/>
+    <aura:attribute name="useLDS" type="Boolean" default="true"/>
+    <aura:attribute name="clickableRows" type="Boolean" default="false"/>
+    <aura:attribute name="sObjectAPIName" type="String" />
+
+    <aura:handler name="change" value="{!v.editMobile}" action="{!c.handleEditMobile}"/>
+    <aura:handler event="c:recordSelected" action="{!c.handleRecordSelected}"/>
+
+    <aura:registerEvent name="removeListElement" type="c:removeListElement"/>
+    <aura:registerEvent name="selectedRecord" type="c:recordSelected"/>
+
+    <aura:if isTrue="{!v.useLDS}">
+        <force:recordData aura:id="theRecordData"
+                          recordId="{!v.recordId}"
+                          targetRecord="{!v.theRecord}"
+                          targetFields="{!v.theSimpleRecord}"
+                          recordUpdated="{!c.refreshRecord}"
+                          layoutType="FULL" />
+    </aura:if>
+
+    <aura:if isTrue="{!v.isSelected}">
+        <tr class="slds-hint-parent slds-is-selected">
+            <aura:iteration items="{!v.sObjectFieldAPINames}" var="fieldName">
+                <td class="slds-cell-wrap slds-truncate" scope="row" onclick="{!c.clickRow}"><c:sObjectRecordElement fieldName="{!fieldName}" theRecord="{!v.theRecord}" sObjectFieldMap="{!v.sObjectFieldMap}" useLDS="{!v.useLDS}" sObjectAPIName="{!v.sObjectAPIName}"/></td>
+            </aura:iteration>
+            <aura:if isTrue="{!v.showRemoveColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:close" class="red" variant="bare" alternativeText="Remove" onclick="{!c.removeElement}" />
+                </td>
+            </aura:if>
+            <aura:if isTrue="{!v.showEditColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" onclick="{!c.editRecord}" />
+                </td>
+            </aura:if>
+            <aura:if isTrue="{!v.showSelectColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:check" class="green" variant="bare" alternativeText="Edit" onclick="{!c.selectRecord}" />
+                </td>
+            </aura:if>
+        </tr>
+    </aura:if>
+    <aura:if isTrue="{!!v.isSelected}">
+        <tr class="slds-hint-parent">
+            <aura:iteration items="{!v.sObjectFieldAPINames}" var="fieldName">
+                <td class="slds-cell-wrap slds-truncate" scope="row" onclick="{!c.clickRow}"><c:sObjectRecordElement fieldName="{!fieldName}" theRecord="{!v.theRecord}" sObjectFieldMap="{!v.sObjectFieldMap}" useLDS="{!v.useLDS}" sObjectAPIName="{!v.sObjectAPIName}"/></td>
+            </aura:iteration>
+            <aura:if isTrue="{!v.showRemoveColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:close" class="red" variant="bare" alternativeText="Remove" onclick="{!c.removeElement}" />
+                </td>
+            </aura:if>
+            <aura:if isTrue="{!v.showEditColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:edit" variant="bare" alternativeText="Edit" onclick="{!c.editRecord}" />
+                </td>
+            </aura:if>
+            <aura:if isTrue="{!v.showSelectColumn}">
+                <td>
+                    <lightning:buttonIcon iconName="utility:check" class="green" variant="bare" alternativeText="Edit" onclick="{!c.selectRecord}" />
+                </td>
+            </aura:if>
+        </tr>
+    </aura:if>
+    <div aura:id="errorMessageComponent"></div>
+    <div aura:id="pageErrorMessageComponent"></div>
+
+</aura:component>

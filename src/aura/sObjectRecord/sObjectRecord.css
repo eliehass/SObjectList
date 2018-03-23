@@ -1,0 +1,19 @@
+.THIS .red{
+    color: red;
+}
+
+.THIS .green{
+    color: green;
+}
+
+.THIS.red span svg{
+    color: red;
+}
+
+.THIS.green span svg{
+    color: green;
+}
+
+.THIS.yellow span svg{
+    color: yellow;
+}

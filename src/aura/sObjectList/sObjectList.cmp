@@ -1,0 +1,75 @@
+<aura:component controller="SObjectSearchController" extends="c:helpers" access="global" implements="flexipage:availableForAllPageTypes">
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.sObjectList}" action="{!c.setTheRecordComponents}"/>
+    <aura:handler name="change" value="{!v.parentId}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.sObjectFieldAPINames}" action="{!c.setTheRecordComponents}"/>
+    <aura:handler event="c:recordSelected" action="{!c.handleRecordSelected}"/>
+    <aura:handler event="c:recordCreated" action="{!c.handleRecordCreated}"/>
+    <aura:handler event="c:removeListElement" action="{!c.handleRemoveListElement}"/>
+
+    <aura:attribute name="sObjectList" type="sObject[]" />
+    <aura:attribute name="isProvidedList" type="Boolean" />
+    <aura:attribute name="recordIdList" type="String[]" />
+    <aura:attribute name="recordIdMap" type="Map" default="{}" />
+    <aura:attribute name="lookUpFieldName" type="String" />
+    <aura:attribute name="sObjectAPIName" type="String" />
+    <aura:attribute name="parentObjectAPIName" type="String" />
+    <aura:attribute name="parentId" type="String" />
+    <aura:attribute name="hasParentId" type="Boolean" />
+    <aura:attribute name="sortState" type="Map" default="{}" />
+    <aura:attribute name="sortElement" type="String" />
+    <aura:attribute name="errors" type="List" default="[]" />
+    <aura:attribute name="showRemoveColumn" type="Boolean" />
+    <aura:attribute name="showEditColumn" type="Boolean" />
+    <aura:attribute name="showSelectColumn" type="Boolean" />
+    <aura:attribute name="runInit" type="Boolean" default="true"/>
+    <aura:attribute name="sObjectFieldMap" type="Map" default="{}" />
+    <aura:attribute name="sObjectFieldAPINames" type="List" default="[]" />
+    <aura:attribute name="fieldSetName" type="String" />
+    <aura:attribute name="recordComponents" type="Aura.Component[]"/>
+    <aura:attribute name="recordComponentName" type="String" default="c:sObjectRecord" />
+    <aura:attribute name="sObjectName" type="String" default="sObject" />
+    <aura:attribute name="hasComponents" type="Boolean" default="false"/>
+    <aura:attribute name="listName" type="String" />
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    <aura:attribute name="sObjectListSize" type="Integer" default="0"/>
+    <aura:attribute name="useLDS" type="Boolean" default="true"/>
+    <aura:attribute name="clickableRows" type="Boolean" default="false"/>
+    <aura:attribute name="selectedRecordId" type="String" />
+
+    <aura:if isTrue="{!v.isLoading}">
+        <lightning:spinner />
+    </aura:if>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer slds-scrollable--x slds-table--fixed-layout">
+        <thead>
+        <tr class="slds-text-heading--label">
+            <aura:iteration items="{!v.sObjectFieldAPINames}" var="fieldName">
+                <th class="slds-is-sortable slds-truncate" id="{!fieldName}" scope="col" onclick="{!c.sort}">
+                    <c:sObjectListHeaderElement sObjectFieldMap="{!v.sObjectFieldMap}" fieldName="{!fieldName}"/>
+                    <div class="slds-icon_container">
+                        <c:sObjectListSortArrow sortState="{!v.sortState}" fieldName="{!fieldName}"/>
+                    </div>
+                </th>
+            </aura:iteration>
+            <aura:if isTrue="{!v.showEditColumn}">
+                <th class="slds-cell-shrink" scope="col"></th>
+            </aura:if>
+            <aura:if isTrue="{!v.showRemoveColumn}">
+                <th class="slds-cell-shrink" scope="col"></th>
+            </aura:if>
+            <aura:if isTrue="{!v.showSelectColumn}">
+                <th class="slds-cell-shrink" scope="col"></th>
+            </aura:if>
+        </tr>
+        </thead>
+        <aura:if isTrue="{!v.hasComponents}">
+            <tbody>
+            <aura:iteration items="{!v.recordComponents}" var="theRecordComponent">
+                    {!theRecordComponent}
+            </aura:iteration>
+            </tbody>
+        </aura:if>
+    </table>
+
+</aura:component>

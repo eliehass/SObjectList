@@ -1,0 +1,7 @@
+<design:component >
+    <design:attribute name="parentObjectAPIName" label="The API name of the parent object." />
+    <design:attribute name="sObjectAPIName" label="The API name of the child object." />
+    <design:attribute name="lookUpFieldName" label="The API name of the field which looks up to the parent object." />
+    <design:attribute name="fieldSetName" label="Name of the field set that holds the fields for the columns." />
+    <design:attribute name="listName" label="Unique name of this list." />
+</design:component>

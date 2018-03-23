@@ -1,0 +1,11 @@
+<aura:component >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <aura:attribute name="sObjectFieldMap" type="Map" default="{}"/>
+    <aura:attribute name="fieldName" type="String" />
+    <aura:attribute name="fieldValue" type="String" />
+
+
+    <ui:outputText value="{!v.fieldValue}"/>
+
+</aura:component>

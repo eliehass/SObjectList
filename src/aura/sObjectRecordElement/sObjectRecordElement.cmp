@@ -1,0 +1,76 @@
+<aura:component controller="SObjectSearchController">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler name="change" value="{!v.theRecord}" action="{!c.doInit}"/>
+
+    <aura:attribute name="theRecord" type="sObject" />
+    <aura:attribute name="fieldName" type="String" />
+    <aura:attribute name="fieldValue" type="String" />
+    <aura:attribute name="lookupId" type="String" />
+    <aura:attribute name="nameField" type="Boolean" default="false" />
+    <aura:attribute name="emailField" type="Boolean" default="false" />
+    <aura:attribute name="phoneField" type="Boolean" default="false" />
+    <aura:attribute name="dateField" type="Boolean" default="false" />
+    <aura:attribute name="regularField" type="Boolean" default="false" />
+    <aura:attribute name="lookupField" type="Boolean" default="false" />
+    <aura:attribute name="sObjectFieldMap" type="Map" default="{}"/>
+    <aura:attribute name="useLDS" type="Boolean" default="true"/>
+    <aura:attribute name="sObjectAPIName" type="String" />
+    <aura:attribute name="isClassic" type="Boolean" default="false"/>
+
+    <aura:if isTrue="{!!v.isClassic}">
+        <aura:if isTrue="{!v.useLDS}">
+            <aura:if isTrue="{!v.nameField}">
+                <a href="{! '#/sObject/' + v.theRecord.fields.Id.value + '/view'}">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!!v.useLDS}">
+            <aura:if isTrue="{!v.nameField}">
+                <a href="{! '#/sObject/' + v.theRecord.Id + '/view'}">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.useLDS}">
+            <aura:if isTrue="{!v.lookupField}">
+                <a href="{! '#/sObject/' + v.lookupId + '/view'}" target="_blank">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!!v.useLDS}">
+            <aura:if isTrue="{!v.lookupField}">
+                <a href="{! '#/sObject/' + v.lookupId + '/view'}" target="_blank">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.isClassic}">
+        <aura:if isTrue="{!v.useLDS}">
+            <aura:if isTrue="{!v.nameField}">
+                <a href="{! '/' + v.theRecord.fields.Id.value}">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!!v.useLDS}">
+            <aura:if isTrue="{!v.nameField}">
+                <a href="{! '/' + v.theRecord.Id}">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!v.useLDS}">
+            <aura:if isTrue="{!v.lookupField}">
+                <a href="{! '/' + v.lookupId}" target="_blank">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+        <aura:if isTrue="{!!v.useLDS}">
+            <aura:if isTrue="{!v.lookupField}">
+                <a href="{! '/' + v.lookupId }" target="_blank">{!v.fieldValue}</a>
+            </aura:if>
+        </aura:if>
+    </aura:if>
+    <aura:if isTrue="{!v.emailField}">
+        <lightning:formattedEmail value="{!v.fieldValue}" />
+    </aura:if>
+    <aura:if isTrue="{!v.phoneField}">
+        <lightning:formattedPhone value="{!v.fieldValue}" />
+    </aura:if>
+    <aura:if isTrue="{!v.dateField}">
+        <lightning:formattedDateTime value="{!v.fieldValue}" timeZone="UTC" />
+    </aura:if>
+    <aura:if isTrue="{!v.regularField}">
+            {!v.fieldValue}
+    </aura:if>
+</aura:component>
